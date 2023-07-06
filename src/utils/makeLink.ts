@@ -1,0 +1,1 @@
+export const makeLink = (repository: string) => repository.split("/").join("%2F");
