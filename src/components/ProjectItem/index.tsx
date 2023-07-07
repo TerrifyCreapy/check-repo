@@ -31,7 +31,7 @@ const ProjectItem: FC<IProjectItem> = ({
 
 
     const infoConfig = {
-        fontSize: "20px", display: "flex", alignItems: "center"
+        fontSize: "20px", display: "flex", maxHeight: "24px"
     }
 
     const isSame = {
@@ -39,7 +39,8 @@ const ProjectItem: FC<IProjectItem> = ({
     }
 
     const iconsSize = {
-        width: "24px"
+        width: "24px",
+        marginTop: "1px"
     }
 
     const menuItems = [
@@ -75,7 +76,7 @@ const ProjectItem: FC<IProjectItem> = ({
             <Typography
                 component="div"
             >
-                {repository}
+                repository path: {repository}
             </Typography>
             <Typography
                 component="h6"
@@ -92,27 +93,27 @@ const ProjectItem: FC<IProjectItem> = ({
                     sx={infoConfig}
                     color={getWarningColor(merge_requests > 0)}
                 >
-                    <CallMergeIcon sx={iconsSize}/> {isLoadingMR? <CircularProgress size={20}/>: merge_requests} MR
+                    <CallMergeIcon sx={iconsSize}/> {isLoadingMR? <CircularProgress sx={{margin: "3px"}} size={18}/>: merge_requests} MR
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
                     color={getWarningColor(feature_branches > 0)}
                 >
-                    <AltRouteIcon sx={iconsSize}/>  {isLoadingFB? <CircularProgress size={20}/>: feature_branches} FB
+                    <AltRouteIcon sx={iconsSize}/>  {isLoadingFB? <CircularProgress sx={{margin: "3px"}} size={18}/>: feature_branches} FB
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
                 >
-                   Dev {isLoadingSame? <CircularProgress size={20}/>:<ArrowForwardIcon sx={isSame}/>} Master
+                   Dev {isLoadingSame? <CircularProgress sx={{margin: "3px"}} size={18}/>:<ArrowForwardIcon sx={isSame}/>} Master
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
                     color={getStatusColor(pipelines.status)}
                 >
-                    <RocketLaunchIcon sx={iconsSize}/> {pipelines.date === "null"? "": pipelines.date}
+                    <RocketLaunchIcon sx={iconsSize}/> {isLoadingPipelines? <CircularProgress sx={{margin: "3px"}} size={18}/> :  pipelines.date === "null"? "": pipelines.date}
                 </Typography>
             </Typography>
             <MoreActions menuItems={menuItems}/>

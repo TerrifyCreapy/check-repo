@@ -90,7 +90,7 @@ export default class ProductStore {
                 isLoadingMR: true,
                 isLoadingFB: true,
                 isLoadingPipelines:true,
-                isTheSame: true,
+                isLoadingSame: true,
             }});
         }
     }
@@ -104,7 +104,7 @@ export default class ProductStore {
                         isLoadingMR: true,
                         isLoadingFB: true,
                         isLoadingPipelines:true,
-                        isTheSame: true,
+                        isLoadingSame: true,
                     };
                 }
                 else {
@@ -114,9 +114,6 @@ export default class ProductStore {
         }
     }
 
-    async checkRepository(repository: string) {
-        
-    }
 
     async checkOneProject(repository: string) {
         try {
@@ -133,6 +130,7 @@ export default class ProductStore {
             res = await ProjectsAPI.getPipeLinesStatus(repository);
             this.setPipelines(repository, res.status, `${res.date}`);
             this.setLoadingRepository(repository, false);
+            this.setLoading(false);
 
         }
         catch(e) {

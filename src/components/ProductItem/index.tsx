@@ -38,14 +38,20 @@ const ProductItem: FC<IproductItem> = ({internal_product_name, product_descripti
             }
         }>
             <NavLink to={projects_path + `/${product_id}`}>
-                <Typography component="div">
+                <Typography component="div" sx={{fontWeight: "bold", fontSize: 40}}>
                     {product_name}
                 </Typography>
-                <Typography component="p">
+                <Typography component="p" sx={{maxWidth: "90%", fontSize: 18, wordWrap: "balance"}}>
                     {product_description}
                 </Typography>
-                <Typography>
-                    {internal_product_name} {release_version} {release_date}
+                <Typography component="div">
+                    Internal name: {internal_product_name}
+                </Typography> 
+                <Typography component="div">
+                    release version: {release_version}
+                </Typography> 
+                <Typography component="div">
+                    release date: {release_date}
                 </Typography> 
             </NavLink>
             <MoreActions menuItems={menuItems}/>
