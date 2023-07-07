@@ -8,14 +8,22 @@ import HeaderProduct from "../components/Header/HeaderProduct";
 import CardList from "../components/CardList";
 import ProductItem from "../components/ProductItem";
 import IProject from "../interfaces/entities/IProject";
+import { useNavigate } from "react-router-dom";
+import { auth_path } from "../contants/routes";
 
 const ProjectsPage: FC = () => {
 
-    const {productsStore} = useStore();
+    const {productsStore, userStore} = useStore();
+    const navigate = useNavigate();
 
     function onUploadFile(event: ChangeEvent<HTMLInputElement>) {
         if(!event.target.files || event.target.files.length !== 1) return;
         productsStore.uploadProduct(event.target.files[0]);
+    }
+
+    function onLogout() {
+        const success = userStore.logout();
+        if(success) navigate(auth_path);
     }
 
     function onRemove(id: string) {
@@ -31,7 +39,7 @@ const ProjectsPage: FC = () => {
     return(
         <>
             <HeaderLayout>
-                <HeaderProduct onUpload={onUploadFile}/>
+                <HeaderProduct onLogout={onLogout} onUpload={onUploadFile}/>
             </HeaderLayout>
             <Container maxWidth="md" sx={{marginTop: 3, height: "calc(100vh - 100px)"}}>
                 <CardList products={products}/>

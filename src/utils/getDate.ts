@@ -1,0 +1,1 @@
+export const getDate = (date: string):string | null => (date.match(/[0-9]*-[0-9]{1,2}-[0-9]{1,2}/gi) || [null])[0];

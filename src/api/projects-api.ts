@@ -2,6 +2,7 @@ import Cookies from "universal-cookie";
 import { makeLink } from "../utils/makeLink";
 import axios from "axios";
 import { getStatus } from "../utils/getStatus";
+import { getDate } from "../utils/getDate";
 
 const cookie = new Cookies();
 
@@ -44,7 +45,7 @@ export default class ProjectsAPI {
     public static async isTheSame(repository: string): Promise<boolean> {
         try {
             const link = makeLink(repository);
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/repository/compare?from=main&to=dev`, {
+            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/repository/compare?from=master&to=dev`, {
                 headers: {
                     "Authorization": `Bearer ${cookie.get("access_token")}`
                 }
@@ -62,20 +63,23 @@ export default class ProjectsAPI {
             return false;
         }
     }
-    public static async getPipeLinesStatus(repository: string): Promise<"success" | "error" | "processing"> {
+    public static async getPipeLinesStatus(repository: string): Promise<{status: "success" | "error" | "processing", date: string | null}> {
         try {
             const link = makeLink(repository);
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/pipelines`, {
+            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/pipelines?ref=master`, {
                 headers: {
                     "Authorization": `Bearer ${cookie.get("access_token")}`
                 }
             });
-            const status = getStatus(data);
-            return status;
+            
+            const status = data.length === 0? "success" : getStatus(data[data.length-1].status);
+            const date = data.length === 0? "null": getDate(data[data.length-1].updated_at);
+            return {status, date};
         }
         catch(e) {
             console.error(e);
-            return "error";
+            return {status: "success", date: getDate("null")};
         }
     }
+
 }

@@ -4,6 +4,7 @@ import {Menu, MenuItem} from "@mui/material";
 interface IContextItem {
     text: string;
     action: () => unknown;
+    disable?:boolean;
 }
 
 interface IContextMenu {
@@ -25,9 +26,10 @@ const ContextMenu: FC<IContextMenu> = ({opened, onClose, anchorEl, linkId, menuI
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}
+        sx={{top: 2}}
       >
         {menuItems.map(e => {
-            return <MenuItem key={e.text} onClick={() => {
+            return <MenuItem key={e.text} disabled={e.disable} onClick={() => {
                 onClose();
                 e.action();
             }}>{e.text}</MenuItem>

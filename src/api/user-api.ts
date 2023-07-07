@@ -40,6 +40,7 @@ export default class UserApi {
     public static async getMe(): Promise<IUser | null> {
         try {
             const token = cookies.get("access_token");
+            if(!token) return null;
             const {data} = await axios.get("https://gitlab.com/api/v4/user", {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -56,6 +57,7 @@ export default class UserApi {
     public static async refresh():Promise<boolean> {
         try {
             const refresh = cookies.get("refresh_token");
+            if(!refresh) return false;
             const send = new FormData();
             send.append("grant_type", "refresh_token");
             send.append("refresh_token", refresh);

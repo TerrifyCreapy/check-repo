@@ -3,7 +3,7 @@ import Cookies from "universal-cookie";
 import { baseURLAuth, baseURLAPI } from "../contants/url";
 
 
-const cookie = new Cookies();
+export const cookie = new Cookies();
 
 export const authInstance = axios.create({
     baseURL: baseURLAuth,

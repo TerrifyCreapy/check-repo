@@ -17,9 +17,17 @@ export interface IStateProject extends IProject {
 }
 
 export interface IDebProject {
+    isLoading: boolean;
     repository: string;
     merge_requests: number;
+    isLoadingMR: boolean;
     feature_branches: number;
+    isLoadingFB:boolean;
     isTheSame: boolean;
-    pipelines: "success" | "processing" | "error";
+    isLoadingSame: boolean;
+    pipelines: {
+        status: "success" | "processing" | "error",
+        date: string;
+    };
+    isLoadingPipelines: boolean;
 }

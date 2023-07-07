@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-
+import 'react-toastify/dist/ReactToastify.css';
 import "./styles/reset.scss";
 import { Routes, Route } from "react-router-dom";
 import { mapRoutes } from "./utils/mapRoutes";

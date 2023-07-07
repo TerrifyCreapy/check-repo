@@ -17,3 +17,10 @@ export function getStatusColor(status: "success" | "processing" | "error") {
 export function getWarningColor(bool: boolean) {
     return bool && "#ff9800" || "#D3D3D3";
 }
+
+export function getInfoColor(mr: number, fb: number, same: boolean, pipelines: string) {
+    if(pipelines === "error" || mr && fb && !same) return "#d32f2f";
+    if((mr && !fb && same) || (!mr && fb && same) || (!mr && !fb && !same)) return "#ff9800";
+    if((mr && fb && same) || (mr && !fb && !same) || (!mr && fb && !same)) return "#ed6c02";
+    return "rgba(0,0,0,.2)";
+}

@@ -1,14 +1,33 @@
 import {FC} from "react";
 import { observer } from "mobx-react-lite";
 import { IDebProject } from "../../interfaces/entities/IProject";
-import { ListItem, Typography } from "@mui/material";
+import { CircularProgress, ListItem, Typography } from "@mui/material";
 import CallMergeIcon from '@mui/icons-material/CallMerge';
-import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
+import AltRouteIcon from '@mui/icons-material/AltRoute';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
-import { getStatusColor, getWarningColor } from "../../utils/getColor";
+import { getInfoColor, getStatusColor, getWarningColor } from "../../utils/getColor";
+import MoreActions from "../MoreActions/MoreActions";
 
-const ProjectItem: FC<IDebProject> = ({repository, merge_requests, feature_branches, isTheSame, pipelines}) => {
+interface IProjectItem extends IDebProject {
+    isAllLoading: boolean;
+    onReload: (repository: string) => Promise<unknown>;
+}
+
+const ProjectItem: FC<IProjectItem> = ({
+    repository, 
+    merge_requests, 
+    feature_branches, 
+    isTheSame, 
+    pipelines, 
+    isLoading,
+    isLoadingFB,
+    isLoadingMR,
+    isLoadingPipelines,
+    isLoadingSame,
+    isAllLoading,
+    onReload,
+}) => {
 
 
     const infoConfig = {
@@ -23,15 +42,34 @@ const ProjectItem: FC<IDebProject> = ({repository, merge_requests, feature_branc
         width: "24px"
     }
 
+    const menuItems = [
+        {
+            text: "to repository",
+            action: () => {
+                const newWindow = window.open("https://gitlab.com/" + repository, '_blank', 'noopener,noreferrer');
+                if(newWindow) newWindow.opener = null;
+            },
+
+        },
+        {
+            text: "reload",
+            action: async () => {
+                await onReload(repository);
+            },
+            disable: isAllLoading
+        }
+
+    ];
+
     return(
         <ListItem
             sx={{
-                border: "1px solid",
-                borderColor: "#757ce8",
+                border: "5px solid",
+                borderColor: isLoading? "rgba(0,0,0,.2)": getInfoColor(merge_requests, feature_branches, isTheSame, pipelines.status),
                 display: "flex",
                 flexDirection: "column",
                 gap: 2,
-                alignItems: "flex-start"
+                alignItems: "flex-start",
             }}
         >
             <Typography
@@ -54,31 +92,30 @@ const ProjectItem: FC<IDebProject> = ({repository, merge_requests, feature_branc
                     sx={infoConfig}
                     color={getWarningColor(merge_requests > 0)}
                 >
-                    <CallMergeIcon sx={iconsSize}/> {merge_requests} MR
+                    <CallMergeIcon sx={iconsSize}/> {isLoadingMR? <CircularProgress size={20}/>: merge_requests} MR
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
                     color={getWarningColor(feature_branches > 0)}
                 >
-                    <FeaturedPlayListIcon sx={iconsSize}/>  {feature_branches} FB
+                    <AltRouteIcon sx={iconsSize}/>  {isLoadingFB? <CircularProgress size={20}/>: feature_branches} FB
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
                 >
-                   Dev <ArrowForwardIcon sx={isSame}/> Master
+                   Dev {isLoadingSame? <CircularProgress size={20}/>:<ArrowForwardIcon sx={isSame}/>} Master
                 </Typography>
                 <Typography
                     component="div"
                     sx={infoConfig}
-                    color={getStatusColor(pipelines)}
+                    color={getStatusColor(pipelines.status)}
                 >
-                    <RocketLaunchIcon sx={iconsSize}/>  pipelines
+                    <RocketLaunchIcon sx={iconsSize}/> {pipelines.date === "null"? "": pipelines.date}
                 </Typography>
-                
-                
             </Typography>
+            <MoreActions menuItems={menuItems}/>
         </ListItem>
     )
 }
