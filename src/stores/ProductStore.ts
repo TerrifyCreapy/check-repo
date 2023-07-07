@@ -138,12 +138,17 @@ export default class ProductStore {
         }
     }
 
+    stop() {
+        this.product = null;
+    }
+
     async checkProjects() {
         try {
             this.setLoading(true);
             if(!this.product) return;
             this.setAllLoading();
             for(let i = 0; i < this.product.x_deb_projects.length; i++) {
+                if(!this.product) return;
                 const tempRepo = this.product.x_deb_projects[i].repository;
                 this.setLoadingRepository(tempRepo, true);
                 let res: number | boolean | {status: "success" | "processing" | "error", date: string | null}= await ProjectsAPI.getMergeRequests(tempRepo);
@@ -159,7 +164,7 @@ export default class ProductStore {
             this.setLoading(false);
         }
         catch(e) {
-            console.error(e);
+            return;
         }
     }
 

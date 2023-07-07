@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/reset.scss";
 import { Routes, Route } from "react-router-dom";
 import { mapRoutes } from "./utils/mapRoutes";
@@ -10,27 +10,22 @@ import useStore from "./hooks/useStore";
 import Loader from "./components/Loader";
 
 const App: FC = () => {
-  const {userStore} = useStore();
+    const { userStore } = useStore();
 
-  useEffect(() => {
-    userStore.refresh();
-    userStore.getMe();
-  }, [])
+    useEffect(() => {
+        userStore.refresh();
+        userStore.getMe();
+    }, []);
 
-  if(userStore.isLoading) return <Loader/>;
+    if (userStore.isLoading) return <Loader />;
 
-  return (
-    <div className="App">
-      <Routes>
-        {mapRoutes(routes)}
-        {userStore.isAuth && mapRoutes(private_routes)}
-        <Route
-          path="*"
-          element={<div>Not found page</div>}
-        />
-      </Routes>
-    </div>
-  );
-}
+    return (
+        <Routes>
+            {mapRoutes(routes)}
+            {userStore.isAuth && mapRoutes(private_routes)}
+            <Route path="*" element={<div>Not found page</div>} />
+        </Routes>
+    );
+};
 
 export default observer(App);
