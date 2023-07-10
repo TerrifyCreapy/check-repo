@@ -30,6 +30,7 @@ export default class ProductStore {
                         ...Object.keys(element.x_deb_projects).map(e => {
                             return {
                                 repository: element.x_deb_projects[e],
+                                found: true,
                                 merge_requests: 0,
                                 isLoadingMR: true,
                                 feature_branches: 0,
@@ -52,11 +53,18 @@ export default class ProductStore {
             });
     };
 
+    setFound(repository: string, bool: boolean) {
+        if(this.product) {
+            this.product.x_deb_projects = this.product.x_deb_projects.map(e => e.repository === repository?{...e, found: bool,}: e);
+        }
+    }
+
     setMergeRequest(repository: string, num: number) {
         if(this.product) {
             this.product.x_deb_projects = this.product.x_deb_projects.map(e => e.repository === repository?{...e, merge_requests: num, isLoadingMR: false}: e);
         }
     }
+
 
     setFeatureBranches(repository: string, num: number) {
         if(this.product) {
@@ -150,9 +158,11 @@ export default class ProductStore {
             for(let i = 0; i < this.product.x_deb_projects.length; i++) {
                 if(!this.product) return;
                 const tempRepo = this.product.x_deb_projects[i].repository;
+                if(!this.product.x_deb_projects[i].found) continue;
                 const isRepo = await ProjectsAPI.isRepository(tempRepo);
                 if(!isRepo) {
                     this.setLoadingProject(tempRepo, false);
+                    this.setFound(tempRepo, false);
                     continue;
                 }
                 this.setLoadingRepository(tempRepo, true);

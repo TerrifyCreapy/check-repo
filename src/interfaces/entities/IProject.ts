@@ -19,6 +19,7 @@ export interface IStateProject extends IProject {
 export interface IDebProject {
     isLoading: boolean;
     repository: string;
+    found: boolean;
     merge_requests: number;
     isLoadingMR: boolean;
     feature_branches: number;

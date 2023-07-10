@@ -8,6 +8,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import { getInfoColor, getStatusColor, getWarningColor } from "../../utils/getColor";
 import MoreActions from "../MoreActions/MoreActions";
+import ToRepository from "../ToRepository";
 
 interface IProjectItem extends IDebProject {
     isAllLoading: boolean;
@@ -16,6 +17,7 @@ interface IProjectItem extends IDebProject {
 
 const ProjectItem: FC<IProjectItem> = ({
     repository, 
+    found,
     merge_requests, 
     feature_branches, 
     isTheSame, 
@@ -45,19 +47,11 @@ const ProjectItem: FC<IProjectItem> = ({
 
     const menuItems = [
         {
-            text: "to repository",
-            action: () => {
-                const newWindow = window.open("https://gitlab.com/" + repository, '_blank', 'noopener,noreferrer');
-                if(newWindow) newWindow.opener = null;
-            },
-
-        },
-        {
             text: "reload",
             action: async () => {
                 await onReload(repository);
             },
-            disable: isAllLoading
+            disable: isAllLoading || !found
         }
 
     ];
@@ -77,7 +71,7 @@ const ProjectItem: FC<IProjectItem> = ({
                 component="div"
                 sx={{fontSize: "calc(12px + 6 * (100vw/1440))"}}
             >
-                repository path: {repository}
+                name: {repository.split("/")[repository.split("/").length - 1]} {found? "": "not found"}
             </Typography>
             <Grid
                 container
@@ -142,6 +136,7 @@ const ProjectItem: FC<IProjectItem> = ({
                 
             </Grid>
             <MoreActions menuItems={menuItems}/>
+            <ToRepository repository={repository}/>
         </ListItem>
     )
 }
