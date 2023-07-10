@@ -1,7 +1,7 @@
 import {FC} from "react";
 import { observer } from "mobx-react-lite";
 import { IDebProject } from "../../interfaces/entities/IProject";
-import { CircularProgress, ListItem, Typography } from "@mui/material";
+import { CircularProgress, ListItem, Typography, Grid } from "@mui/material";
 import CallMergeIcon from '@mui/icons-material/CallMerge';
 import AltRouteIcon from '@mui/icons-material/AltRoute';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -75,47 +75,72 @@ const ProjectItem: FC<IProjectItem> = ({
         >
             <Typography
                 component="div"
+                sx={{fontSize: "calc(12px + 6 * (100vw/1440))"}}
             >
                 repository path: {repository}
             </Typography>
-            <Typography
-                component="h6"
-                sx={{
-                    display: "flex",
-                    height: "24px",
-                    alignItems: "center",
-                    justifyContent: "space-around",
-                    width: "100%"
-                }}
+            <Grid
+                container
+                spacing={0}
+                columns={12}
             >
-                <Typography
-                    component="div"
-                    sx={infoConfig}
-                    color={getWarningColor(merge_requests > 0)}
+                <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{display: "flex", justifyContent: "center"}}
                 >
-                    <CallMergeIcon sx={iconsSize}/> {isLoadingMR? <CircularProgress sx={{margin: "3px"}} size={18}/>: merge_requests} MR
-                </Typography>
-                <Typography
-                    component="div"
-                    sx={infoConfig}
-                    color={getWarningColor(feature_branches > 0)}
+                    <Typography
+                        sx={infoConfig}
+                        color={getWarningColor(merge_requests > 0)}
+                    >
+                        <CallMergeIcon sx={iconsSize}/> {isLoadingMR? <CircularProgress sx={{margin: "3px"}} size={18}/>: merge_requests} MR
+                    </Typography>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{display: "flex", justifyContent: "center"}}
                 >
-                    <AltRouteIcon sx={iconsSize}/>  {isLoadingFB? <CircularProgress sx={{margin: "3px"}} size={18}/>: feature_branches} FB
-                </Typography>
-                <Typography
-                    component="div"
-                    sx={infoConfig}
+                    <Typography
+                        sx={infoConfig}
+                        color={getWarningColor(feature_branches > 0)}
+                    >
+                        <AltRouteIcon sx={iconsSize}/>  {isLoadingFB? <CircularProgress sx={{margin: "3px"}} size={18}/>: feature_branches} FB
+                    </Typography>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{display: "flex", justifyContent: "center"}}
                 >
-                   Dev {isLoadingSame? <CircularProgress sx={{margin: "3px"}} size={18}/>:<ArrowForwardIcon sx={isSame}/>} Master
-                </Typography>
                 <Typography
-                    component="div"
-                    sx={infoConfig}
-                    color={getStatusColor(pipelines.status)}
+                        sx={infoConfig}
+                    >
+                    Dev {isLoadingSame? <CircularProgress sx={{margin: "3px"}} size={18}/>:<ArrowForwardIcon sx={isSame}/>} Master
+                    </Typography>
+               </Grid>
+               <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    lg={3}
+                    sx={{display: "flex", justifyContent: "center"}}
                 >
-                    <RocketLaunchIcon sx={iconsSize}/> {isLoadingPipelines? <CircularProgress sx={{margin: "3px"}} size={18}/> :  pipelines.date === "null"? "": pipelines.date}
-                </Typography>
-            </Typography>
+                    <Typography
+                        sx={infoConfig}
+                        color={getStatusColor(pipelines.status)}
+                    >
+                        <RocketLaunchIcon sx={iconsSize}/> {isLoadingPipelines? <CircularProgress sx={{margin: "3px"}} size={18}/> :  pipelines.date === "null"? "": pipelines.date}
+                    </Typography>
+                </Grid>
+                
+            </Grid>
             <MoreActions menuItems={menuItems}/>
         </ListItem>
     )

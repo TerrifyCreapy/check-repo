@@ -1,5 +1,7 @@
-import { Button } from "@mui/material";
 import { FC } from "react";
+
+import { Button } from "@mui/material";
+
 
 interface IButton {
     text: string;

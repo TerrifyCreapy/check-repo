@@ -1,34 +1,44 @@
-import Cookies from "universal-cookie";
+import { instance } from "./base";
+import { getCookie } from "../utils/setCookies";
 import { makeLink } from "../utils/makeLink";
-import axios from "axios";
 import { getStatus } from "../utils/getStatus";
 import { getDate } from "../utils/getDate";
 
-const cookie = new Cookies();
-
 export default class ProjectsAPI {
+    public static async isRepository(repository: string): Promise<boolean> {
+        try {
+            const link = makeLink(repository);
+            await instance.get(`/projects/${link}`, {
+                headers: {
+                    "Authorization": `Bearer ${getCookie("access_token")}`
+                }
+            });
+            return true;
+        }
+        catch(e: any) {
+            return false;
+        }
+    }
     public static async getMergeRequests(repository:string):Promise<number> {
         try {
             const link = makeLink(repository);
-            console.log(cookie.get("access_token"));
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/merge_requests?state=opened`, {
+            const {data} = await instance.get<any[]>(`/projects/${link}/merge_requests?state=opened`, {
                 headers: {
-                    "Authorization": `Bearer ${cookie.get("access_token")}`
+                    "Authorization": `Bearer ${getCookie("access_token")}`
                 }
             });
             return data.length;
         }
         catch(e) {
-            console.error(e);
+            return 0;
         }
-        return 0;
     }
     public static async getFeatureBranches(repository: string): Promise<number> {
         try {
             const link = makeLink(repository);
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/repository/branches`, {
+            const {data} = await instance.get<{name: string}[]>(`/projects/${link}/repository/branches`, {
                 headers: {
-                    "Authorization": `Bearer ${cookie.get("access_token")}`
+                    "Authorization": `Bearer ${getCookie("access_token")}`
                 }
             });
             let cnt = 0;
@@ -38,16 +48,15 @@ export default class ProjectsAPI {
             return cnt;
         }
         catch(e) {
-            console.error(e);
             return 0;
         }
     }
     public static async isTheSame(repository: string): Promise<boolean> {
         try {
             const link = makeLink(repository);
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/repository/compare?from=master&to=dev`, {
+            const {data} = await instance.get<{commit: any[], commits: any[], diffs: any[]}>(`/projects/${link}/repository/compare?from=master&to=dev`, {
                 headers: {
-                    "Authorization": `Bearer ${cookie.get("access_token")}`
+                    "Authorization": `Bearer ${getCookie("access_token")}`
                 }
             });
 
@@ -59,25 +68,22 @@ export default class ProjectsAPI {
             }
         }
         catch(e) {
-            console.error(e);
-            return false;
+            return true;
         }
     }
     public static async getPipeLinesStatus(repository: string): Promise<{status: "success" | "error" | "processing", date: string | null}> {
         try {
             const link = makeLink(repository);
-            const {data} = await axios.get(`https://gitlab.com/api/v4/projects/${link}/pipelines?ref=master`, {
+            const {data} = await instance.get<{status: string, updated_at: string}[]>(`/projects/${link}/pipelines?ref=master`, {
                 headers: {
-                    "Authorization": `Bearer ${cookie.get("access_token")}`
+                    "Authorization": `Bearer ${getCookie("access_token")}`
                 }
             });
-            
-            const status = data.length === 0? "success" : getStatus(data[data.length-1].status);
+            const status = data.length === 0? "success" : getStatus(data[data.length-1]);
             const date = data.length === 0? "null": getDate(data[data.length-1].updated_at);
             return {status, date};
         }
         catch(e) {
-            console.error(e);
             return {status: "success", date: getDate("null")};
         }
     }

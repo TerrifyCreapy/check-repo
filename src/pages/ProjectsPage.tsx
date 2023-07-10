@@ -1,4 +1,5 @@
 import {ChangeEvent, FC, useEffect, ReactNode} from "react";
+import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Container } from "@mui/material";
 
@@ -8,7 +9,6 @@ import HeaderProduct from "../components/Header/HeaderProduct";
 import CardList from "../components/CardList";
 import ProductItem from "../components/ProductItem";
 import IProject from "../interfaces/entities/IProject";
-import { useNavigate } from "react-router-dom";
 import { auth_path } from "../contants/routes";
 
 const ProjectsPage: FC = () => {
@@ -32,7 +32,7 @@ const ProjectsPage: FC = () => {
 
     useEffect(() => {
         productsStore.loadProducts();
-    }, []);
+    }, [productsStore]);
 
     const products: ReactNode[] = productsStore.products.map((e: IProject) => <ProductItem key={e.product.product_id + e.product.product_name + e.product.release_date} onRemove={onRemove} {...e.product}/>);
 

@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, useState } from "react";
 import { Input, InputAdornment } from "@mui/material";
-import { PanoramaFishEye } from "@mui/icons-material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface IInput {

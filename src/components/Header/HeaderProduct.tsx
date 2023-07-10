@@ -1,10 +1,7 @@
 import { ChangeEvent, FC, useState, MouseEvent } from "react";
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import AddIcon from "@mui/icons-material/Add";
-import { Avatar, Input, Menu, MenuItem, IconButton } from "@mui/material";
+import { Avatar, Input, Menu, MenuItem, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from "@mui/icons-material/Add";
 
 interface IHeaderProduct {
     onUpload: (event: ChangeEvent<HTMLInputElement>) => unknown;
@@ -29,15 +26,15 @@ const HeaderProduct: FC<IHeaderProduct> = ({onUpload, onLogout}) => {
     }
 
     return (
-        <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Toolbar sx={{display: "flex", marginTop: {xs: 2, sm: 0} ,flexDirection: {xs: "column", sm: "row"}, justifyContent: {xs: "center", sm: "space-between"}, gap: 2}}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1, lineHeight: "1"}}>
                 Products
             </Typography>
             <Button 
                 variant="contained"
                 color="primary"
                 component="label" 
-                sx={{marginRight: 2}}
+                sx={{marginRight: {xs: 0, am: 2}}}
                 ><AddIcon/><Input onChange={onUpload} hidden type="file" sx={{display: "none"}} />  
             </Button>
             <IconButton onClick={onOpen}>

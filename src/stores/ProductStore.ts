@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import IProject, { IDebProject, IStateProject } from "../interfaces/entities/IProject";
+import { IDebProject, IStateProject } from "../interfaces/entities/IProject";
 import localforage from "localforage";
 import ProjectsAPI from "../api/projects-api";
 
@@ -95,16 +95,16 @@ export default class ProductStore {
         }
     }
 
-    setLoadingProject(repository: string) {
+    setLoadingProject(repository: string, bool: boolean) {
         if(this.product) {
             this.product.x_deb_projects = this.product.x_deb_projects.map(e => {
                 if(e.repository === repository) {
                     return {...e, 
-                        isLoading: true,
-                        isLoadingMR: true,
-                        isLoadingFB: true,
-                        isLoadingPipelines:true,
-                        isLoadingSame: true,
+                        isLoading: bool,
+                        isLoadingMR: bool,
+                        isLoadingFB: bool,
+                        isLoadingPipelines:bool,
+                        isLoadingSame: bool,
                     };
                 }
                 else {
@@ -119,7 +119,7 @@ export default class ProductStore {
         try {
             this.setLoading(true);
             if(!this.product) return;
-            this.setLoadingProject(repository);
+            this.setLoadingProject(repository, true);
             this.setLoadingRepository(repository, true);
             let res: number | boolean | {status: "success" | "processing" | "error", date: string | null}= await ProjectsAPI.getMergeRequests(repository);
             this.setMergeRequest(repository, res);
@@ -150,6 +150,11 @@ export default class ProductStore {
             for(let i = 0; i < this.product.x_deb_projects.length; i++) {
                 if(!this.product) return;
                 const tempRepo = this.product.x_deb_projects[i].repository;
+                const isRepo = await ProjectsAPI.isRepository(tempRepo);
+                if(!isRepo) {
+                    this.setLoadingProject(tempRepo, false);
+                    continue;
+                }
                 this.setLoadingRepository(tempRepo, true);
                 let res: number | boolean | {status: "success" | "processing" | "error", date: string | null}= await ProjectsAPI.getMergeRequests(tempRepo);
                 this.setMergeRequest(tempRepo, res);

@@ -34,10 +34,12 @@ const MoreActions: FC<IMoreActions> = ({menuItems}) => {
                     sx={{
                         position: "absolute",
                         top: 10,
-                        right: 0,
+                        right: 5,
                         zIndex: 3,
                         width: "20px",
-                        height: "20px"
+                        height: "20px",
+                        padding: 0,
+                        minWidth: 0,
                     }}
                 >
                     <MoreVert/>

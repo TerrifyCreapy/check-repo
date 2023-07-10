@@ -1,12 +1,14 @@
 import { FC, useState, ChangeEvent, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {Grid, Card} from "@mui/material";
-import InputAuth from "../components/Input";
-import ButtonComponent from "../components/Button";
+import {ToastContainer, toast } from "react-toastify";
 
 import useStore from "../hooks/useStore";
-import { useNavigate } from "react-router-dom";
+import InputAuth from "../components/Input";
+import ButtonComponent from "../components/Button";
 import { projects_path } from "../contants/routes";
-import {ToastContainer  ,toast } from "react-toastify";
+
 
 const AuthPage: FC = () => {
 
@@ -38,7 +40,7 @@ const AuthPage: FC = () => {
 
     useEffect(() => {
         if(!userStore.isLoading && userStore.isAuth) navigate(projects_path)
-    }, [])
+    }, [navigate, userStore.isAuth, userStore.isLoading])
 
 
     return (

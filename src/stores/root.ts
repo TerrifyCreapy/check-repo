@@ -14,6 +14,5 @@ export default class RootStore {
         this.userStore = new UserStore();
         this.productsStore = new ProductsStore();
         this.productStore = new ProductStore();
-        console.debug(this);
     }
 }

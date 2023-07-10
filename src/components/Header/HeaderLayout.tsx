@@ -1,7 +1,5 @@
 import { FC, ReactNode } from "react";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import { Container } from "@mui/material";
+import { Container, AppBar, Box } from "@mui/material";
 
 interface IHeaderLayout {
   children: ReactNode;
@@ -12,7 +10,7 @@ const HeaderLayout: FC<IHeaderLayout> = ({children}) => {
       <Box sx={{ flexGrow: 1 }}>
         
           <AppBar position="static">
-            <Container maxWidth="md">
+            <Container maxWidth="md" sx={{flexDirection: "column"}}>
               {children}
             </Container>
           </AppBar>

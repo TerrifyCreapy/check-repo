@@ -15,7 +15,7 @@ const App: FC = () => {
     useEffect(() => {
         userStore.refresh();
         userStore.getMe();
-    }, []);
+    }, [userStore]);
 
     if (userStore.isLoading) return <Loader />;
 

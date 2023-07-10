@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { IUser } from "../interfaces/entities/IUserEntity";
 import UserApi from "../api/user-api";
-import { cookie } from "../api/base";
+import { removeCookie } from "../utils/setCookies";
 
 export default class UserStore {
     user: IUser | null;
@@ -15,12 +15,7 @@ export default class UserStore {
     }
 
     setUser(user: IUser | null) {
-        try {
-            this.user = user;
-        }   
-        catch(e) {
-            console.error(e);
-        }
+        this.user = user;
     }
 
     setLoading(bool: boolean) {
@@ -41,20 +36,17 @@ export default class UserStore {
             return true;
         }
         catch(e) {
-            console.error(e);
             return false;
         }
     }
 
     logout(): boolean {
         try {
-            cookie.remove("access_token");
-            cookie.remove("refresh_token");
+            removeCookie("access_token", "refresh_token");
             this.setIsAuth(false);
             return true;
         }
         catch(e) {
-            console.error(e);
             return false;
         }
     }
@@ -69,16 +61,16 @@ export default class UserStore {
             if(user) this.setIsAuth(true);
         }
         catch(e) {
-            console.error(e);
+            return;
         }
     }
 
     async refresh() {
         try {
-            const success = await UserApi.refresh();
+            await UserApi.refresh();
         }
         catch(e) {
-            console.error(e);
+            return;
         }
     }
 }

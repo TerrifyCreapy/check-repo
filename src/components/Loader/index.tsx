@@ -1,5 +1,6 @@
-import { CircularProgress, Grid } from "@mui/material";
 import { FC } from "react";
+import { CircularProgress, Grid } from "@mui/material";
+
 
 const Loader: FC = () => {
     return (

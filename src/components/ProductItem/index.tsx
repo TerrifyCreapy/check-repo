@@ -1,9 +1,9 @@
-import { MouseEvent, FC, useState, useId } from "react";
-import { Button, ListItem, Typography } from "@mui/material";
-import { IProductItem } from "../../interfaces/entities/IProject";
-import { MoreVert } from "@mui/icons-material";
-import ContextMenu from "../ContextMenu";
+import {FC} from "react";
 import { NavLink } from "react-router-dom";
+
+import { ListItem, Typography } from "@mui/material";
+import { IProductItem } from "../../interfaces/entities/IProject";
+
 import { projects_path } from "../../contants/routes";
 import MoreActions from "../MoreActions/MoreActions";
 
@@ -27,6 +27,7 @@ const ProductItem: FC<IproductItem> = ({internal_product_name, product_descripti
             flexDirection: "column", 
             alignItems: "flex-start", 
             transition: "all .3s linear",
+            gap: 2,
             ":hover": {backgroundColor: "#dedede"},
             " > *": {
                 textDecoration: "none", 
@@ -38,13 +39,13 @@ const ProductItem: FC<IproductItem> = ({internal_product_name, product_descripti
             }
         }>
             <NavLink to={projects_path + `/${product_id}`}>
-                <Typography component="div" sx={{fontWeight: "bold", fontSize: 40}}>
+                <Typography component="div" sx={{fontWeight: "bold", fontSize: "calc(24px + 16 * (100vw / 1440))"}}>
                     {product_name}
                 </Typography>
-                <Typography component="p" sx={{maxWidth: "90%", fontSize: 18, wordWrap: "balance"}}>
+                <Typography component="p" sx={{maxWidth: "90%", fontSize: "calc(12px + 6 * (100vw / 1440))", wordWrap: "balance", wordBreak: "break-word"}}>
                     {product_description}
                 </Typography>
-                <Typography component="div">
+                <Typography component="div" sx={{marginTop: 2}}>
                     Internal name: {internal_product_name}
                 </Typography> 
                 <Typography component="div">
