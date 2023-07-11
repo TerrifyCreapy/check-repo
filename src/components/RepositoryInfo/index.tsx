@@ -35,7 +35,7 @@ const RepositoryInfo: FC<IRepositoryInfo> = ({
 }) => {
 
     const isSame = {
-        color:  !isTheSame?"#ef5350": "#D3D3D3"
+        color:  isTheSame?"#ef5350": "#D3D3D3"
     }
 
     const iconsSize = {
