@@ -12,7 +12,6 @@ import IProject from "../interfaces/entities/IProject";
 import { auth_path } from "../contants/routes";
 
 const ProjectsPage: FC = () => {
-
     const {productsStore, userStore} = useStore();
     const navigate = useNavigate();
 

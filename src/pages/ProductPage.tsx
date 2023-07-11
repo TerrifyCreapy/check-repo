@@ -66,6 +66,7 @@ const ProductPage: FC = () => {
     const debian: ReactNode[] = deb_projects.map((e: IDebProject) => (
         <ProjectItem
             isAllLoading={productStore.isLoading}
+            currentLoading={productStore.currentLoading}
             onReload={onReload}
             key={e.repository}
             {...e}

@@ -6,8 +6,13 @@ import ProjectsAPI from "../api/projects-api";
 export default class ProductStore {
     product: IStateProject | null = null;
     isLoading: boolean = false;
+    currentLoading: string = "";
     constructor() {
         makeAutoObservable(this);
+    }
+
+    setCurrentLoading(repo: string) {
+        this.currentLoading = repo;
     }
 
     setLoading(bool: boolean) {
@@ -105,6 +110,7 @@ export default class ProductStore {
 
     setLoadingProject(repository: string, bool: boolean) {
         if(this.product) {
+            this.setCurrentLoading(repository);
             this.product.x_deb_projects = this.product.x_deb_projects.map(e => {
                 if(e.repository === repository) {
                     return {...e, 
@@ -118,7 +124,8 @@ export default class ProductStore {
                 else {
                     return e;
                 }
-            })
+            });
+            this.setCurrentLoading("");
         }
     }
 
@@ -155,10 +162,16 @@ export default class ProductStore {
             this.setLoading(true);
             if(!this.product) return;
             this.setAllLoading();
+            
             for(let i = 0; i < this.product.x_deb_projects.length; i++) {
+                
                 if(!this.product) return;
                 const tempRepo = this.product.x_deb_projects[i].repository;
-                if(!this.product.x_deb_projects[i].found) continue;
+                this.setCurrentLoading(tempRepo);
+                if(!this.product.x_deb_projects[i].found) {
+                    this.setLoadingProject(tempRepo, false);
+                    continue;
+                };
                 const isRepo = await ProjectsAPI.isRepository(tempRepo);
                 if(!isRepo) {
                     this.setLoadingProject(tempRepo, false);
@@ -177,6 +190,7 @@ export default class ProductStore {
                 this.setLoadingRepository(tempRepo, false);
             }
             this.setLoading(false);
+            this.setCurrentLoading("");
         }
         catch(e) {
             return;

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SelectChangeEvent, Select, MenuItem, Box, Toolbar, Typography, Button } from "@mui/material";
 import { Refresh, ArrowBack } from "@mui/icons-material";
 
@@ -16,7 +16,10 @@ interface IProductItemComponent extends IProductItem {
 }
 
 const HeaderProductItem: FC<IProductItemComponent> = ({product_name, release_version, onUpdate, isLoading, sortBy, setSortBy, sortVariants}) => {
-
+    const navigate = useNavigate();
+    function onGetBack() {
+        navigate(projects_path);
+    }
     return (
         <Toolbar sx={{display: "flex", padding: {xs: 2, sm: 0} ,flexDirection: {xs: "column", sm: "row"}, justifyContent: {xs: "center", sm: "space-between"}, gap: 2}}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "calc(16px + 4 * (100vw / 1440))" }}>
@@ -49,7 +52,7 @@ const HeaderProductItem: FC<IProductItemComponent> = ({product_name, release_ver
                     color="primary"
                     component={NavLink} 
                     to={projects_path}
-                    onClick={onUpdate}
+                    onClick={onGetBack}
                     sx={{marginLeft: 3}}
                     >
                         <ArrowBack/> 
