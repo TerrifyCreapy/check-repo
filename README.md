@@ -13,6 +13,24 @@ This app can show information about "merge-request"'s count, "feature branch" co
   </ol>
 </details>
 
+## The requirements to file
+
+The type of file must be json.
+The structure of this file must be the next:
+{
+  "product": {
+    "internal_product_name": "name",
+    "product_description": "description",
+    "product_id": "id",
+    "product_name": "name",
+    "release_date": "date",
+    "release_version": "version"
+  },
+  "x_deb_projects": {
+    "project": "project-path" // project path is every symbol after https://gitlab.com/
+  }
+}
+
 ## Techologies
 <ul>
   <li>ReactJS</li>
