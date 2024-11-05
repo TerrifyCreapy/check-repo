@@ -4,7 +4,7 @@ Application was created for checking repositories gitlab of internal project.
 This app can show information about "merge-request"'s count, "feature branch" count, is different dev and master branches and pipeline status.
 
 <details>
-  <summaru>To run this application locally</summaru>
+  <summary>To run this application locally</summary>
   <ol>
     <li>Download this project</li>
     <li>Run command npm/yarn install to install all dependencies</li>
@@ -13,7 +13,7 @@ This app can show information about "merge-request"'s count, "feature branch" co
   </ol>
 </details>
 
-##Techologies
+## Techologies
 <ul>
   <li>ReactJS</li>
   <li>TypeScript</li>
