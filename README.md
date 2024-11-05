@@ -28,11 +28,19 @@ This app can show information about "merge-request"'s count, "feature branch" co
 <details>
   <summary>The demonstration of this project</summary>
   The main page is Auth page. It require email and password to connect to Gitlab
+  
   ![image](https://github.com/user-attachments/assets/4235241c-1d05-4586-a294-7e1bebe390c0)
+  
   Using wrong email or password causes pop-up notification
+  
   ![image](https://github.com/user-attachments/assets/356d42d0-a0d5-4cad-851a-b0922f441b2a)
+  
   Second page contains header with name of page, button to add project and icon of profile.
+  
   ![image](https://github.com/user-attachments/assets/90f1c39a-ae18-4d4a-97ce-a5efe1233ee5)
+  
   The third page contains header with name of project, types of sorting, reload and back buttons and card with project list.
+  
   ![image](https://github.com/user-attachments/assets/390eb4e9-4e7c-4970-a48f-36ec4a794162)
+  
 </details>
